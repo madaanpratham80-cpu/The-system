@@ -1,0 +1,237 @@
+/* SCREEN 02 — Identification / Login. Scoped styles for interactive states. */
+
+.stage {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 24px;
+  transition: opacity 0.8s ease;
+}
+
+/* Faint monitor scan line sweeping down the viewport */
+.scanline {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(0, 212, 255, 0.04);
+  animation: scanSweep 8s linear infinite;
+}
+
+@keyframes scanSweep {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(100vh);
+  }
+}
+
+.panel {
+  position: relative;
+  width: 90%;
+  max-width: 480px;
+  margin-top: -6vh; /* nudge slightly above dead-center */
+  padding: 48px 56px;
+  background: rgba(0, 212, 255, 0.025);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  animation: panelEntry 0.5s ease-out 0.2s forwards;
+}
+
+@keyframes panelEntry {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.label {
+  font-size: 10px;
+  color: rgba(0, 212, 255, 0.4);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  min-height: 1.2em;
+}
+
+.question {
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.82);
+  letter-spacing: 1.5px;
+  line-height: 1.4;
+  margin-bottom: 32px;
+}
+
+.input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.35);
+  border-radius: 0;
+  padding: 12px 0;
+  font-family: inherit;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.88);
+  caret-color: #00d4ff;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.2);
+  letter-spacing: 1px;
+}
+
+.input:focus {
+  border-bottom-color: rgba(0, 212, 255, 0.7);
+  box-shadow: 0 4px 12px rgba(0, 212, 255, 0.12);
+}
+
+.inputSubmitted {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.error {
+  font-size: 11px;
+  color: #ff3c3c;
+  letter-spacing: 1px;
+}
+
+.divider {
+  position: relative;
+  text-align: center;
+}
+
+.divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.dividerText {
+  position: relative;
+  background: #070b0d;
+  padding: 0 12px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.22);
+  letter-spacing: 3px;
+}
+
+.ghostBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  padding: 13px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.45);
+  transition: all 0.2s ease;
+}
+
+.ghostBtn:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.ghostBtn:active {
+  transform: scale(0.98);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.confirmWrap {
+  overflow: hidden;
+  transition:
+    max-height 0.3s ease,
+    opacity 0.3s ease,
+    margin-top 0.3s ease;
+}
+
+.confirmBtn {
+  width: 100%;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  border-radius: 2px;
+  padding: 13px 28px;
+  font-family: inherit;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirmBtn:hover:not(:disabled) {
+  background: rgba(0, 212, 255, 0.14);
+  border-color: rgba(0, 212, 255, 0.55);
+}
+
+.confirmBtn:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.confirmBtn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.08);
+  background: transparent;
+}
+
+.sysLine1 {
+  font-size: 14px;
+  color: #00c896;
+  letter-spacing: 2px;
+}
+
+.sysLine2 {
+  font-size: 12px;
+  color: rgba(0, 196, 150, 0.6);
+}
+
+.note {
+  font-size: 11px;
+  color: rgba(0, 196, 150, 0.55);
+  letter-spacing: 1px;
+}
+
+@media (max-width: 639px) {
+  .panel {
+    width: 92%;
+    padding: 32px 28px;
+  }
+  .question {
+    font-size: 18px;
+  }
+  .input {
+    font-size: 14px;
+  }
+}

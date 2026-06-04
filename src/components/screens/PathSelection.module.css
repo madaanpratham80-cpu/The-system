@@ -1,0 +1,127 @@
+/* SCREEN 03 — Path Selection. Scoped styles for cards + interactive states. */
+
+.stage {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 13vh 24px 56px;
+  text-align: center;
+  transition: opacity 0.8s ease;
+}
+
+.label {
+  font-size: 10px;
+  color: rgba(0, 212, 255, 0.4);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  min-height: 1.2em;
+  margin-bottom: 22px;
+}
+
+.statement {
+  font-size: 40px;
+  letter-spacing: 4px;
+  line-height: 1.18;
+  font-weight: 700;
+}
+
+.sub {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 2px;
+  margin-top: 18px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 260px);
+  gap: 20px 20px;
+  margin-top: 40px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  background: rgba(0, 212, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  padding: 20px 24px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(0, 212, 255, 0.28);
+  box-shadow:
+    0 10px 32px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(0, 212, 255, 0.12);
+}
+
+.cardSelected,
+.cardSelected:hover {
+  transform: translateY(0);
+  border-color: rgba(0, 212, 255, 0.55);
+  background: rgba(0, 212, 255, 0.07);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.icon {
+  color: rgba(0, 212, 255, 0.7);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.82);
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  margin-top: 5px;
+  line-height: 1.3;
+}
+
+.pill {
+  position: absolute;
+  top: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 9px;
+  color: #00d4ff;
+  letter-spacing: 2px;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+.response {
+  font-size: 12px;
+  color: #00c896;
+  letter-spacing: 2px;
+  margin-top: 32px;
+}
+
+@media (max-width: 639px) {
+  .statement {
+    font-size: 30px;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    width: 100%;
+    max-width: 320px;
+  }
+}
