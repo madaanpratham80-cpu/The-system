@@ -1,0 +1,246 @@
+/* SCREEN 05D — Habit Selection (Side Quest path). Centered, multi-select grid. */
+
+.stage {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 8vh 24px 80px;
+  transition: opacity 0.8s ease;
+}
+
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  padding: 48px 44px;
+  background: rgba(0, 212, 255, 0.025);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  animation: panelEntry 0.5s ease-out 0.2s forwards;
+}
+
+@keyframes panelEntry {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.progress {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.22);
+  letter-spacing: 2px;
+}
+
+.label {
+  font-size: 10px;
+  color: rgba(0, 212, 255, 0.4);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  min-height: 1.2em;
+  margin-bottom: 22px;
+}
+
+.question {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.82);
+  letter-spacing: 2px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.explanation {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.30);
+  letter-spacing: 1px;
+  margin-bottom: 24px;
+}
+
+/* ── Habit cards grid ────────────────────────────────────────────────────── */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 80px;
+  padding: 14px 16px;
+  background: rgba(0, 212, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+  user-select: none;
+}
+
+.card:hover {
+  border-color: rgba(0, 212, 255, 0.22);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.cardSelected {
+  border-color: rgba(0, 212, 255, 0.55);
+  background: rgba(0, 212, 255, 0.07);
+  box-shadow: inset 0 1px 6px rgba(0, 0, 0, 0.30);
+}
+
+.cardSelected:hover {
+  border-color: rgba(0, 212, 255, 0.65);
+}
+
+.checkmark {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  color: rgba(0, 212, 255, 0.80);
+}
+
+.icon {
+  color: rgba(0, 212, 255, 0.55);
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.iconSelected {
+  color: rgba(0, 212, 255, 1.0);
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.70);
+  letter-spacing: 1px;
+  line-height: 1.2;
+}
+
+/* ── Custom habit input ──────────────────────────────────────────────────── */
+
+.addCustomBtn {
+  display: block;
+  margin-top: 20px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 11px;
+  color: rgba(0, 212, 255, 0.55);
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.addCustomBtn:hover { color: rgba(0, 212, 255, 0.80); }
+
+.customInputWrap {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.customInput {
+  width: 200px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.35);
+  border-radius: 0;
+  padding: 6px 0;
+  font-family: inherit;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.80);
+  caret-color: #00d4ff;
+  outline: none;
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+
+.customInput::placeholder { color: rgba(255, 255, 255, 0.22); }
+
+.customInput:focus { border-bottom-color: rgba(0, 212, 255, 0.65); }
+
+/* ── Validation + submit ─────────────────────────────────────────────────── */
+
+.error {
+  font-size: 11px;
+  color: #ff3c3c;
+  letter-spacing: 1px;
+  margin-top: 16px;
+}
+
+.btnWrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.confirmBtn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 2px;
+  padding: 10px 32px;
+  font-family: inherit;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.confirmBtn:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.confirmBtn:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.30);
+}
+
+.confirmBtn:disabled {
+  opacity: 0.30;
+  cursor: not-allowed;
+}
+
+/* ── System response ─────────────────────────────────────────────────────── */
+
+.sysLine1 {
+  font-size: 14px;
+  color: #00c896;
+  letter-spacing: 2px;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 639px) {
+  .stage { padding: 5vh 16px 80px; }
+
+  .panel {
+    padding: 36px 24px;
+    max-width: 100%;
+  }
+
+  .question { font-size: 17px; }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .card { height: 76px; }
+}

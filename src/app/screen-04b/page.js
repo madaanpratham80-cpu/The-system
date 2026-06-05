@@ -1,5 +1,5 @@
-import PendingScreen from "@/components/screens/PendingScreen";
+import GenderFitness from "@/components/screens/GenderFitness";
 
 export default function Screen04bPage() {
-  return <PendingScreen code="SCREEN 04B" title="GENDER" />;
+  return <GenderFitness />;
 }

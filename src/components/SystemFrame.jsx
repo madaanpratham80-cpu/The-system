@@ -87,8 +87,8 @@ function SystemClock() {
 export default function SystemFrame({ children, status = "[AWAITING INPUT]" }) {
   return (
     <div
-      className="relative min-h-screen w-full overflow-hidden"
-      style={{ backgroundColor: "#070b0d" }}
+      className="relative min-h-screen w-full overflow-x-hidden"
+      style={{ backgroundColor: "#070b0d", animation: "system-fade 0.35s ease forwards" }}
     >
       <div className="system-grid" />
       <CornerBrackets />

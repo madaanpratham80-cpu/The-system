@@ -1,38 +1,64 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { IconChevronsDown } from "@tabler/icons-react";
+import {
+  IconBook,
+  IconChevronsDown,
+  IconSchool,
+  IconBuilding,
+  IconTrophy,
+  IconPencil,
+} from "@tabler/icons-react";
 import SystemFrame from "@/components/SystemFrame";
 import { getSystemState, setSystemState } from "@/lib/systemState";
 import { nextScreen } from "@/lib/flowMap";
-import styles from "./AgeAcademics.module.css";
+import styles from "./AcademicFocus.module.css";
 
-const LABEL = "[AGE CALIBRATION REQUIRED]";
+const LABEL = "[ACADEMIC PROFILE ANALYSIS]";
 const TYPE_START_DELAY = 600;
 const TYPE_SPEED = 40;
-const MIN_AGE = 13;
-const MAX_AGE = 80;
 
-function validateAge(raw) {
-  if (raw.trim() === "")
-    return "Age required. Enter a number between 13 and 80.";
-  const n = Number(raw);
-  if (!Number.isFinite(n))
-    return "Age required. Enter a number between 13 and 80.";
-  if (n < MIN_AGE) return "Must be at least 13.";
-  if (n > MAX_AGE) return "Must be 80 or under.";
-  return "";
-}
+const CARDS = [
+  {
+    id: "board-exams",
+    Icon: IconBook,
+    title: "BOARD EXAMS",
+    sub: "High school / National board exams",
+  },
+  {
+    id: "college-entrance",
+    Icon: IconSchool,
+    title: "COLLEGE ENTRANCE",
+    sub: "SAT, ACT, JEE, NEET, entrance tests",
+  },
+  {
+    id: "university",
+    Icon: IconBuilding,
+    title: "UNIVERSITY",
+    sub: "Degree coursework and exams",
+  },
+  {
+    id: "competitive-exam",
+    Icon: IconTrophy,
+    title: "COMPETITIVE EXAM",
+    sub: "Civil service, law, other competitive tests",
+  },
+  {
+    id: "custom",
+    Icon: IconPencil,
+    title: "CUSTOM / OTHER",
+    sub: "Self-directed learning",
+  },
+];
 
 /**
- * SCREEN 04A — AGE INPUT (Academics path)
- * First calibration question. Asks the user's age for "learning curve
- * optimization", then invites them to scroll to the next screen.
+ * SCREEN 05A — ACADEMIC FOCUS (Academics path)
+ * The system asks what the user is preparing for.
+ * One card selectable (radio); auto-advances on scroll after confirmation.
  */
-export default function AgeAcademics() {
+export default function AcademicFocus() {
   const router = useRouter();
-  const inputRef = useRef(null);
   const timers = useRef([]);
   const advanced = useRef(false);
 
@@ -40,12 +66,9 @@ export default function AgeAcademics() {
   const [typed, setTyped] = useState("");
   const [typingDone, setTypingDone] = useState(false);
   const [showQuestion, setShowQuestion] = useState(false);
-  const [showInput, setShowInput] = useState(false);
-  const [showButton, setShowButton] = useState(false);
+  const [showCards, setShowCards] = useState(false);
 
-  const [age, setAge] = useState("");
-  const [error, setError] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [selected, setSelected] = useState(null);
   const [showSys1, setShowSys1] = useState(false);
   const [showSys2, setShowSys2] = useState(false);
   const [leaving, setLeaving] = useState(false);
@@ -74,29 +97,28 @@ export default function AgeAcademics() {
     };
   }, []);
 
-  // Staggered reveal: question -> input -> button
+  // Staggered reveal: question -> cards
   useEffect(() => {
     if (!typingDone) return;
     const t = [
       setTimeout(() => setShowQuestion(true), 400),
-      setTimeout(() => setShowInput(true), 600),
-      setTimeout(() => setShowButton(true), 700),
-      setTimeout(() => inputRef.current?.focus(), 900),
+      setTimeout(() => setShowCards(true), 700),
     ];
     return () => t.forEach(clearTimeout);
   }, [typingDone]);
 
+  // Cleanup timers on unmount
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
 
-  const proceed = () => {
+  const proceed = useCallback(() => {
     if (advanced.current) return;
     advanced.current = true;
     setLeaving(true);
     const path = getSystemState().path || "academics";
-    setTimeout(() => router.push(nextScreen(path, "/screen-04a")), 600);
-  };
+    setTimeout(() => router.push(nextScreen(path, "/screen-05a")), 600);
+  }, [router]);
 
-  // After submission, scroll / arrow / click advances to the next screen
+  // After sys2 shows, scroll / arrow / key advances to the next screen
   useEffect(() => {
     if (!showSys2) return;
     const onWheel = (e) => {
@@ -111,44 +133,23 @@ export default function AgeAcademics() {
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("keydown", onKey);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showSys2]);
+  }, [showSys2, proceed]);
 
-  const handleChange = (e) => {
-    setAge(e.target.value);
-    if (error) setError("");
-  };
-
-  const handleSubmit = () => {
-    if (isSubmitted) return;
-    const err = validateAge(age);
-    if (err) {
-      setError(err);
-      return;
-    }
-    setError("");
-    setIsSubmitted(true);
-    setSystemState({ age: Number(age) });
+  const handleSelect = (id) => {
+    if (selected) return; // radio: lock after first choice
+    setSelected(id);
+    setSystemState({ academic_focus: id });
     timers.current.push(setTimeout(() => setShowSys1(true), 500));
     timers.current.push(setTimeout(() => setShowSys2(true), 1100));
   };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      handleSubmit();
-    }
-  };
-
-  const isValid = validateAge(age) === "";
 
   return (
     <SystemFrame status="[CALIBRATING...]">
       <div className={styles.stage} style={{ opacity: leaving ? 0 : 1 }}>
         <div className={styles.panel}>
-          <div className={styles.progress}>STEP 1 OF 5</div>
+          <div className={styles.progress}>STEP 2 OF 5</div>
 
-          {/* Element 1 — system label */}
+          {/* Element 1 — system label (typewriter) */}
           <div className={styles.label}>
             {typed}
             {!typingDone && (
@@ -166,64 +167,44 @@ export default function AgeAcademics() {
               transition: "opacity 0.4s ease-out",
             }}
           >
-            State your age, {name || "operator"}. For learning curve
-            optimization.
+            What are you preparing for, {name || "operator"}?
           </div>
 
-          {/* Element 3 — number input */}
+          {/* Element 3 — radio cards */}
           <div
-            style={{
-              marginTop: 32,
-              opacity: showInput ? 1 : 0,
-              transition: "opacity 0.4s ease",
-            }}
+            className={styles.cards}
+            style={{ pointerEvents: selected ? "none" : "auto" }}
           >
-            <input
-              ref={inputRef}
-              type="number"
-              inputMode="numeric"
-              min={MIN_AGE}
-              max={MAX_AGE}
-              className={`${styles.numInput} ${
-                isSubmitted ? styles.numInputSubmitted : ""
-              }`}
-              placeholder="—"
-              value={age}
-              onChange={handleChange}
-              onKeyDown={handleKeyDown}
-              readOnly={isSubmitted}
-            />
-          </div>
-
-          {/* Validation error */}
-          {error && (
-            <div
-              className={styles.error}
-              style={{ marginTop: 16, animation: "system-fade 0.2s ease" }}
-            >
-              {error}
-            </div>
-          )}
-
-          {/* Element 4 — confirm button */}
-          {!isSubmitted && (
-            <div
-              style={{
-                marginTop: 28,
-                opacity: showButton ? 1 : 0,
-                transition: "opacity 0.4s ease",
-              }}
-            >
-              <button
-                type="button"
-                className={styles.confirmBtn}
-                onClick={handleSubmit}
-                disabled={!isValid}
+            {CARDS.map(({ id, Icon, title, sub }, i) => (
+              <div
+                key={id}
+                role="button"
+                tabIndex={showCards ? 0 : -1}
+                onClick={() => handleSelect(id)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleSelect(id);
+                  }
+                }}
+                className={`${styles.card} ${
+                  selected === id ? styles.cardSelected : ""
+                }`}
+                style={{
+                  opacity: showCards ? 1 : 0,
+                  transform: showCards ? "translateY(0)" : "translateY(16px)",
+                  transition: "opacity 0.4s ease, transform 0.4s ease",
+                  transitionDelay: showCards ? `${i * 0.1}s` : "0s",
+                }}
               >
-                CONFIRM
-              </button>
-            </div>
-          )}
+                <Icon className={styles.icon} size={22} stroke={1.75} />
+                <div>
+                  <div className={styles.cardTitle}>{title}</div>
+                  <div className={styles.cardSub}>{sub}</div>
+                </div>
+              </div>
+            ))}
+          </div>
 
           {/* System responses */}
           {showSys1 && (
@@ -231,13 +212,13 @@ export default function AgeAcademics() {
               className={styles.sysLine1}
               style={{ marginTop: 28, animation: "system-fade 0.5s ease" }}
             >
-              Age recorded. Learning parameters initialized.
+              Academic path recorded. Adjusting difficulty parameters.
             </div>
           )}
         </div>
       </div>
 
-      {/* Fixed scroll indicator — matches Boot's pattern, appears after confirmation */}
+      {/* Fixed scroll indicator — matches Boot's pattern, appears after selection */}
       <div
         style={{
           position: "fixed",

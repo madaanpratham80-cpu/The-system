@@ -1,0 +1,51 @@
+/* Shared holographic wireframe figure — used across all fitness-path screens. */
+
+/* holoWrap: defines the canvas size and owns the float animation.
+   Kept separate from holoInner so the glow toggle never restarts the float. */
+.holoWrap {
+  width: 220px;
+  height: 340px;
+  animation: holoFloat 4s ease-in-out infinite;
+}
+
+@keyframes holoFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* holoInner: the glow layer — a separate element so glow can animate
+   independently without interrupting the float on holoWrap. */
+.holoInner {
+  width: 100%;
+  height: 100%;
+}
+
+.glowPulse {
+  animation: holoGlowPulse 0.82s ease forwards;
+}
+
+@keyframes holoGlowPulse {
+  0%   { filter: drop-shadow(0 0 0px   rgba(0, 212, 255, 0.00)); }
+  40%  { filter: drop-shadow(0 0 20px  rgba(0, 212, 255, 0.65)); }
+  100% { filter: drop-shadow(0 0 6px   rgba(0, 212, 255, 0.28)); }
+}
+
+/* Applied to the SVG <rect> sweep element via className */
+.scanLine {
+  animation: holoScan 4s linear infinite;
+}
+
+@keyframes holoScan {
+  from { transform: translateY(-6px); }
+  to   { transform: translateY(396px); }
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 1199px) {
+  .holoWrap {
+    width: auto;
+    height: 85%;
+    aspect-ratio: 220 / 340;
+  }
+}

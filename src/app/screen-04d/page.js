@@ -1,5 +1,5 @@
-import PendingScreen from "@/components/screens/PendingScreen";
+import AgeSideQuest from "@/components/screens/AgeSideQuest";
 
 export default function Screen04dPage() {
-  return <PendingScreen code="SCREEN 04D" title="AGE / SIDE QUEST" />;
+  return <AgeSideQuest />;
 }

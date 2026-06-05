@@ -1,5 +1,5 @@
-import PendingScreen from "@/components/screens/PendingScreen";
+import AcademicFocus from "@/components/screens/AcademicFocus";
 
 export default function Screen05aPage() {
-  return <PendingScreen code="SCREEN 05A" title="ACADEMIC FOCUS" />;
+  return <AcademicFocus />;
 }
