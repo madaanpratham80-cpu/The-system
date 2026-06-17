@@ -1,0 +1,44 @@
+/* Shared calibrated hologram — body-type-aware figure for fitness screens. */
+
+.holoWrap {
+  width: 200px;
+  height: 320px;
+  animation: holoFloat 4s ease-in-out infinite;
+}
+
+@keyframes holoFloat {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-8px); }
+}
+
+.holoInner {
+  width: 100%;
+  height: 100%;
+}
+
+.glowPulse {
+  animation: holoGlowPulse 0.82s ease forwards;
+}
+
+@keyframes holoGlowPulse {
+  0%   { filter: drop-shadow(0 0 0px   rgba(0, 212, 255, 0.00)); }
+  40%  { filter: drop-shadow(0 0 20px  rgba(0, 212, 255, 0.65)); }
+  100% { filter: drop-shadow(0 0 6px   rgba(0, 212, 255, 0.28)); }
+}
+
+.scanLine {
+  animation: holoScan 4s linear infinite;
+}
+
+@keyframes holoScan {
+  from { transform: translateY(-6px);  }
+  to   { transform: translateY(396px); }
+}
+
+@media (max-width: 1199px) {
+  .holoWrap {
+    width: auto;
+    height: 85%;
+    aspect-ratio: 200 / 320;
+  }
+}

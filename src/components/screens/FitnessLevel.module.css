@@ -1,0 +1,194 @@
+/* SCREEN 07B — Fitness Level (Fitness path). Split layout + vertical radio cards. */
+
+.screen {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  transition: opacity 0.8s ease;
+}
+
+/* ── LEFT: glass panel ───────────────────────────────────────────────────── */
+
+.leftSide {
+  width: 55%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 48px;
+}
+
+.panel {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  padding: 48px 52px;
+  background: rgba(0, 212, 255, 0.025);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  animation: panelEntry 0.5s ease-out 0.2s forwards;
+}
+
+@keyframes panelEntry {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.progress {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.22);
+  letter-spacing: 2px;
+}
+
+.label {
+  font-size: 10px;
+  color: rgba(0, 212, 255, 0.4);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  min-height: 1.2em;
+  margin-bottom: 22px;
+}
+
+.question {
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.82);
+  letter-spacing: 2px;
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.explanation {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.30);
+  letter-spacing: 1px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+/* ── Radio cards ─────────────────────────────────────────────────────────── */
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-align: left;
+  background: rgba(0, 212, 255, 0.03);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 4px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 212, 255, 0.28);
+}
+
+.cardSelected,
+.cardSelected:hover {
+  transform: translateY(0);
+  border-color: rgba(0, 212, 255, 0.55);
+  background: rgba(0, 212, 255, 0.07);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.icon {
+  color: rgba(0, 212, 255, 0.70);
+  flex-shrink: 0;
+}
+
+.cardTitle {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.82);
+  letter-spacing: 1px;
+  margin-bottom: 3px;
+}
+
+.cardSub {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.35);
+  line-height: 1.3;
+}
+
+/* ── Principle note ──────────────────────────────────────────────────────── */
+
+.principleNote {
+  margin-top: 20px;
+  font-size: 10px;
+  color: rgba(0, 212, 255, 0.35);
+  letter-spacing: 1px;
+  line-height: 1.5;
+}
+
+/* ── System responses ────────────────────────────────────────────────────── */
+
+.sysLine1 {
+  font-size: 13px;
+  color: #00c896;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.sysLine2 {
+  font-size: 11px;
+  color: rgba(0, 200, 150, 0.55);
+  letter-spacing: 1px;
+}
+
+/* ── RIGHT: hologram area ────────────────────────────────────────────────── */
+
+.rightSide {
+  width: 45%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgba(0, 212, 255, 0.04);
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 1199px) {
+  .screen { flex-direction: column; }
+
+  .rightSide {
+    width: 100%;
+    height: 30vh;
+    min-height: 200px;
+    order: -1;
+    border-left: none;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.04);
+  }
+
+  .leftSide {
+    width: 100%;
+    padding: 28px 24px 60px;
+    order: 1;
+  }
+
+  .panel {
+    max-width: 480px;
+    padding: 36px 32px;
+  }
+}
+
+@media (max-width: 639px) {
+  .panel    { padding: 32px 24px; }
+  .question { font-size: 17px; }
+}
